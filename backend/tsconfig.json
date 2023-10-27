@@ -1,0 +1,19 @@
+{
+  "include": [
+    "./env.d.ts",
+    "../common/**/*",
+    "**/*",
+    "index.d.ts",
+    "**/*.vue"
+  ],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ES2021",
+    "verbatimModuleSyntax": true,
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "declaration": false,
+    "esModuleInterop": true,
+  }
+}
