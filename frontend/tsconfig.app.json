@@ -2,7 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "./env.d.ts",
-    "../common/**/*",
+    "../backend/interfaces/**/*",
     "**/*",
     "**/*.vue"
   ],
@@ -22,7 +22,7 @@
     "baseUrl": "..",
     "paths": {
       "@/*": ["./frontend/*"],
-      "@common/*": ["./common/*"]
+      "@api/*": ["./backend/interfaces/*"]
     }
   }
 }

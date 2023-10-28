@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import type { Task } from '@common/Task'
 import HelloWorld from '@/components/HelloWorld.vue'
-
-const task: Task = {
-    name: '',
-    done: true
-}
-
-console.log(task)
 </script>
 
 <template>

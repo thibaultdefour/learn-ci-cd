@@ -4,22 +4,25 @@ import {
     DataTypes,
     type InferAttributes,
     type InferCreationAttributes,
+    type Attributes,
     Model
 } from 'sequelize'
 import { sequelize } from '../database.js'
 import type { UserInstance } from './user.js'
 
-export class TaskInstance extends Model<
-    InferAttributes<TaskInstance>,
-    InferCreationAttributes<TaskInstance>
+export class TaskModel extends Model<
+    InferAttributes<TaskModel>,
+    InferCreationAttributes<TaskModel>
 > {
-    declare id: CreationOptional<number>
+    declare id: CreationOptional<string>
     declare name: string
     declare done: boolean
     declare ownerId: ForeignKey<UserInstance['id']>
 }
 
-export const Task = TaskInstance.init(
+export type TaskInstance = Attributes<TaskModel>
+
+export const Task = TaskModel.init(
     {
         id: {
             type: DataTypes.UUID,

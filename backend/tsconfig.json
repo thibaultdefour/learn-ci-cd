@@ -1,7 +1,6 @@
 {
   "include": [
     "./env.d.ts",
-    "../common/**/*",
     "**/*",
     "index.d.ts",
     "**/*.vue"

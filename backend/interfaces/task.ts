@@ -1,5 +1,7 @@
 import type { TaskInstance } from '../orm/models/task'
 
+export type { TaskInstance }
+
 export interface TaskAPI {
     '/api/tasks': {
         GET: {
@@ -7,13 +9,10 @@ export interface TaskAPI {
         }
         POST: {
             body: {
-                username: string
-                email: string
-                password: string
+                name: TaskInstance['name']
+                done: TaskInstance['done']
             }
-            response: {
-                access_token: string
-            }
+            response: TaskInstance
         }
     }
 
@@ -26,9 +25,7 @@ export interface TaskAPI {
                 name?: string
                 done?: boolean
             }
-            response: {
-                access_token: string
-            }
+            response: TaskInstance
         }
         DELETE: {
             query: {

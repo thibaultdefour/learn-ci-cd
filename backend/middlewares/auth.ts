@@ -7,8 +7,6 @@ export interface AuthenticatedRequest extends Request {
     user: UserInstance
 }
 const authMiddleware: RequestHandler = (req: AuthenticatedRequest, res, next) => {
-    console.log('auth middleware')
-
     // Récupération du token d'authentification depuis le header Authorization
     const authHeader = req.headers.authorization
     const token = authHeader && authHeader.split(' ')[1]

@@ -21,9 +21,5 @@
     "backend"
   ],
   "author": "Benjamin CHAZELLE",
-  "license": "MIT",
-  "dependencies": {
-    "-": "^0.0.1",
-    "restyped-express-async": "^0.6.1"
-  }
+  "license": "MIT"
 }
