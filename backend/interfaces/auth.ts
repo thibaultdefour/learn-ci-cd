@@ -1,26 +1,6 @@
-export interface AuthAPI {
-    '/api/auth/register': {
-        POST: {
-            body: {
-                username: string
-                email: string
-                password: string
-            }
-            response: {
-                access_token: string
-            }
-        }
-    }
+import type { Prisma } from '@prisma/client'
+import type { AuthAPI } from '../routes/auth.js'
 
-    '/api/auth/login': {
-        POST: {
-            body: {
-                email: string
-                password: string
-            }
-            response: {
-                access_token: string
-            }
-        }
-    }
-}
+export type { AuthAPI }
+
+export type AuthUser = Prisma.UserGroupByOutputType

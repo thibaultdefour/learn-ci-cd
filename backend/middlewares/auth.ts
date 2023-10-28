@@ -1,12 +1,11 @@
-import type { RequestHandler, Request } from 'express'
+import type { Request, Response, NextFunction, RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../consts/secret.js'
-import type User from '../orm/models/user.js'
+import type { AuthUser } from '../interfaces/auth'
 
-export interface AuthenticatedRequest extends Request {
-    user: User
-}
-const authMiddleware: RequestHandler = (req: AuthenticatedRequest, res, next) => {
+export type AuthReq<T extends object> = T & { user: AuthUser }
+
+const authMiddleware = ((req: Request & { user: AuthUser }, res: Response, next: NextFunction) => {
     // Récupération du token d'authentification depuis le header Authorization
     const authHeader = req.headers.authorization
     const token = authHeader && authHeader.split(' ')[1]
@@ -17,15 +16,16 @@ const authMiddleware: RequestHandler = (req: AuthenticatedRequest, res, next) =>
     }
 
     // Vérification et décryptage du token
-    jwt.verify(token, JWT_SECRET, (err, decodedToken: User) => {
+    jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
         if (err) {
             return res.status(401).json({ error: 'Unauthorized', details: 'Invalid token' })
         }
 
-        // Ajout des informations du token décodé à l'objet de requête pour être utilisées par les routes suivantes
-        req.user = decodedToken
+        if (decodedToken) {
+            req.user = decodedToken as AuthUser
+        }
         next()
     })
-}
+}) as RequestHandler
 
 export default authMiddleware

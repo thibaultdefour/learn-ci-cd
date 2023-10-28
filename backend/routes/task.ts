@@ -1,3 +1,5 @@
+import type { AuthReq } from '../middlewares/auth.js'
+import authMiddleware from '../middlewares/auth.js'
 import { usePrisma } from '../orm/database.js'
 import type { ErrorFn, TypedRouteInterface, TypedReq } from './helpers/typed-router.js'
 import { TypedRouter } from './helpers/typed-router.js'
@@ -10,7 +12,9 @@ const typedRouter = new TypedRouter()
             method = 'GET' as const
             endpoint = '/api/tasks' as const
 
-            async handler(req: TypedReq<GetTasksRoute>, error: ErrorFn) {
+            middlewares = [authMiddleware]
+
+            async handler() {
                 return prisma.task.findMany({
                     include: {
                         collection: {
@@ -25,16 +29,52 @@ const typedRouter = new TypedRouter()
     )
     .route(
         new (class PutTasksRoute implements TypedRouteInterface {
-            method = 'PUT' as const
-            endpoint = '/api/tasks' as const
+            method = 'PATCH' as const
+            endpoint = '/api/tasks/:taskId' as const
 
             declare query: { tasksId: string }
-            declare params: { readableLink: boolean }
-            declare body: { business: { name: string } }
-            declare headers: { Authorization: 'Token ABC' }
+            declare body: { name: string; done: boolean }
 
-            async handler(req: TypedReq<PutTasksRoute>, error: ErrorFn) {
-                // return [] as Business[]
+            middlewares = [authMiddleware]
+
+            async handler(req: AuthReq<TypedReq<PutTasksRoute>>, error: ErrorFn) {
+                if (!req.query.tasksId) {
+                    return error(400, 'Bad request')
+                }
+
+                const task = await prisma.task.findFirst({
+                    where: { id: req.query.tasksId }
+                })
+
+                if (!task) {
+                    return error(404, 'Not found')
+                }
+
+                const collection = await prisma.collection.findFirst({
+                    where: {
+                        id: task.collectionId,
+                        ownerId: req.user.id
+                    }
+                })
+
+                if (!collection) {
+                    return error(403, 'Not authorized')
+                }
+
+                if (req.body.name) {
+                    task.name = req.body.name
+                }
+
+                if (req.body.done) {
+                    task.done = req.body.done
+                }
+
+                await prisma.task.update({
+                    where: {
+                        id: task.id
+                    },
+                    data: task
+                })
             }
         })()
     )
@@ -45,11 +85,13 @@ const typedRouter = new TypedRouter()
 
             declare body: { name: string; done: boolean }
 
-            async handler(req: TypedReq<PostTasksRoute>, error: ErrorFn) {
+            middlewares = [authMiddleware]
+
+            async handler(req: AuthReq<TypedReq<PostTasksRoute>>) {
                 const collection = await prisma.collection.create({
                     data: {
                         name: 'My default collection',
-                        ownerId: '' // req.user.id
+                        ownerId: req.user.id
                     }
                 })
 

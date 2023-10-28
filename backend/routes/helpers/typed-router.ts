@@ -1,6 +1,19 @@
+import type { RequestHandler } from 'express'
 import express, { type Router } from 'express'
 
 export type ErrorFn = (status: number, message: string) => void
+
+export interface TypedRouteInterface {
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD'
+    endpoint: string
+    query?: Record<string, string>
+    params?: Record<string, unknown>
+    body?: Record<string, unknown>
+    headers?: Record<string, string>
+    middlewares?: RequestHandler[]
+
+    handler(req: TypedReq<TypedRouteInterface>, error: ErrorFn): Promise<unknown>
+}
 
 export type TypedReq<T extends TypedRouteInterface> = {
     query: Partial<T['query']>
@@ -14,20 +27,8 @@ type ToAPI<H extends TypedRouteInterface> = {
     params: H['params']
     body: H['body']
     headers: H['headers']
-    response: Exclude<ReturnType<H['handler']>, void>
+    response: Exclude<Awaited<ReturnType<H['handler']>>, void>
 }
-
-export interface TypedRouteInterface {
-    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD'
-    endpoint: string
-    query?: Record<string, string>
-    params?: Record<string, unknown>
-    body?: Record<string, unknown>
-    headers?: Record<string, string>
-
-    handler(req: TypedReq<TypedRouteInterface>, error: ErrorFn): Promise<unknown>
-}
-
 export class TypedRouter<O extends Record<string, never>> {
     private router: Router
 
@@ -49,7 +50,7 @@ export class TypedRouter<O extends Record<string, never>> {
 
         const expressMethod = expressMethods[route.method].bind(this.router)
 
-        expressMethod(route.endpoint, async (req, res) => {
+        const routeHandler: RequestHandler = async (req, res) => {
             const error: ErrorFn = (status: number, message: string) => {
                 if (!res.headersSent) {
                     res.status(status)
@@ -94,7 +95,11 @@ export class TypedRouter<O extends Record<string, never>> {
                 res.status(500)
                 res.send({ error: 'Internal server error', details: e })
             }
-        })
+        }
+
+        const middlewaresAndHandler = [...(route.middlewares || []), routeHandler]
+
+        expressMethod(route.endpoint, ...middlewaresAndHandler)
 
         type Extended = O extends { [key in R['endpoint']]: unknown }
             ? O & {
