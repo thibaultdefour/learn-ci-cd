@@ -28,5 +28,8 @@
     "nodemon": "^3.0.1",
     "prisma": "^5.5.2",
     "ts-node": "^10.9.1"
+  },
+  "prisma": {
+    "schema": "orm/prisma/schema.prisma"
   }
 }

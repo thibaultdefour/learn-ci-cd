@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../consts/secret.js'
 import type { AuthAPI } from '../interfaces/auth.js'
-import User from '../orm/models/user.js'
+// import User from '../orm/models/user.js'
+import { usePrisma } from '../orm/database.js'
 import { useTypedRouter } from './helpers/router.js'
+
+const prisma = usePrisma()
 
 const { router, typedRouter } = useTypedRouter<AuthAPI>()
 
@@ -16,28 +19,35 @@ typedRouter.post('/api/auth/register', async (req) => {
         if (typeof password !== 'string') throw new Error('')
 
         // Vérifier si l'utilisateur existe déjà
-        const userWithSameEmail = await User.findOne({ where: { email } })
+        const userWithSameEmail = await prisma.user.findFirst({ where: { email } })
 
         if (userWithSameEmail) {
             throw { error: 'E-mail already used' }
         }
 
         // Vérifier si l'utilisateur existe déjà
-        const userWithSameUserModelname = await User.findOne({
-            attributes: ['id', 'username', 'email', 'admin'],
+        const userWithSameUsername = await prisma.user.findFirst({
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                admin: true
+            },
             where: { username }
         })
 
-        if (userWithSameUserModelname) {
-            throw { error: 'UserModelname already used' }
+        if (userWithSameUsername) {
+            throw { error: 'Username already used' }
         }
 
         // Créer le nouvel utilisateur
-        const newUser = await User.create({
-            username,
-            email,
-            password,
-            admin: false
+        const newUser = await prisma.user.create({
+            data: {
+                username,
+                email,
+                password,
+                admin: false
+            }
         })
 
         // Générer un token JWT pour l'authentification future
@@ -61,7 +71,7 @@ typedRouter.post('/api/auth/login', async (req) => {
 
     try {
         // Vérifier si l'utilisateur existe
-        const user = await User.findOne({
+        const user = await prisma.user.findFirst({
             where: { email }
         })
 

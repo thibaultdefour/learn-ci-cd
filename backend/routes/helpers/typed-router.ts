@@ -2,14 +2,14 @@ import express, { type Router } from 'express'
 
 export type ErrorFn = (status: number, message: string) => void
 
-export type TypedReq<T extends HandlerInterface> = {
+export type TypedReq<T extends TypedRouteInterface> = {
     query: Partial<T['query']>
     params: Partial<T['params']>
     body: Partial<T['body']>
     headers: Partial<T['headers']>
 }
 
-type ToAPI<H extends HandlerInterface> = {
+type ToAPI<H extends TypedRouteInterface> = {
     query: H['query']
     params: H['params']
     body: H['body']
@@ -17,7 +17,7 @@ type ToAPI<H extends HandlerInterface> = {
     response: Exclude<ReturnType<H['handler']>, void>
 }
 
-export interface HandlerInterface {
+export interface TypedRouteInterface {
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD'
     endpoint: string
     query?: Record<string, string>
@@ -25,7 +25,7 @@ export interface HandlerInterface {
     body?: Record<string, unknown>
     headers?: Record<string, string>
 
-    handler(req: TypedReq<HandlerInterface>, error: ErrorFn): unknown
+    handler(req: TypedReq<TypedRouteInterface>, error: ErrorFn): unknown
 }
 
 export class TypedRouter<O extends Record<string, never>> {
@@ -34,7 +34,7 @@ export class TypedRouter<O extends Record<string, never>> {
     constructor(router?: Router) {
         this.router = router || express.Router()
     }
-    route<H extends HandlerInterface>(handler: H) {
+    route<H extends TypedRouteInterface>(handler: H) {
         const expressMethods = {
             GET: this.router.get,
             POST: this.router.post,
@@ -57,7 +57,7 @@ export class TypedRouter<O extends Record<string, never>> {
                 }
             }
 
-            const safeReq = {
+            const typedReq = {
                 query: req.query as H['query'],
                 params: req.params as H['params'],
                 body: req.body as H['body'],
@@ -65,7 +65,7 @@ export class TypedRouter<O extends Record<string, never>> {
             }
 
             try {
-                const responseContent = await handler.handler(safeReq, error)
+                const responseContent = await handler.handler(typedReq, error)
 
                 if (responseContent === undefined) {
                     res.status(500)

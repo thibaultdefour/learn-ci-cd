@@ -20,6 +20,7 @@ export function AsyncRouter<APIDef extends RestypedBase>(app: Express | Router) 
         method: Method,
         handler: Handler<Path, Method>
     ) {
+        // @ts-expect-error noop
         const route = app[method.toLowerCase()].bind(app)
         route(path, function (req: TypedRequest<APIDef[Path][Method]>, res: Response) {
             function error(status: number, message: string): void {
@@ -46,6 +47,7 @@ export function AsyncRouter<APIDef extends RestypedBase>(app: Express | Router) 
                                 DELETE: 204
                             }
 
+                            // @ts-expect-error noop
                             const status = statuses[req.method]
 
                             if (status) {
@@ -135,6 +137,7 @@ export function AsyncRouter<APIDef extends RestypedBase>(app: Express | Router) 
 export function useTypedRouter<T>() {
     const router = express.Router()
 
+    // @ts-expect-error noop
     const typedRouter = AsyncRouter<T>(router)
 
     return { router, typedRouter }

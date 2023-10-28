@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { Task } from '@api/task'
 import { ref } from 'vue'
+import type { ServiceReturn } from '@/services/helper/typing.js'
 import { getTasks } from '@/services/task.js'
+
+type Task = ServiceReturn<typeof getTasks>[0]
 
 const tasks = ref<Task[]>([])
 
@@ -25,7 +27,7 @@ loadTasks()
             <tbody>
                 <tr v-for="task in tasks" :key="task.id">
                     <td>{{ task.name }}</td>
-                    <td>{{ task.owner.username }}</td>
+                    <td>{{ task.collection.owner.username }}</td>
                     <td>{{ task.id }}</td>
                 </tr>
             </tbody>
