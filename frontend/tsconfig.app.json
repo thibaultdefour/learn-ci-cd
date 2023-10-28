@@ -16,6 +16,7 @@
     "moduleResolution": "Node",
     "module": "ESNext",
     "strict": true,
+    "strictNullChecks": true,
     "noEmit": true,
     "noImplicitThis": true,
     "composite": true,

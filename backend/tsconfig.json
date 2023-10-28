@@ -12,6 +12,8 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "strict": true,
+    "strictNullChecks": true,
     "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
