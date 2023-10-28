@@ -25,7 +25,7 @@ export interface TypedRouteInterface {
     body?: Record<string, unknown>
     headers?: Record<string, string>
 
-    handler(req: TypedReq<TypedRouteInterface>, error: ErrorFn): unknown
+    handler(req: TypedReq<TypedRouteInterface>, error: ErrorFn): Promise<unknown>
 }
 
 export class TypedRouter<O extends Record<string, never>> {
@@ -34,7 +34,7 @@ export class TypedRouter<O extends Record<string, never>> {
     constructor(router?: Router) {
         this.router = router || express.Router()
     }
-    route<H extends TypedRouteInterface>(handler: H) {
+    route<R extends TypedRouteInterface>(route: R) {
         const expressMethods = {
             GET: this.router.get,
             POST: this.router.post,
@@ -47,9 +47,9 @@ export class TypedRouter<O extends Record<string, never>> {
 
         type Methods = keyof typeof expressMethods
 
-        const route = expressMethods[handler.method].bind(this.router)
+        const expressMethod = expressMethods[route.method].bind(this.router)
 
-        route(handler.endpoint, async (req, res) => {
+        expressMethod(route.endpoint, async (req, res) => {
             const error: ErrorFn = (status: number, message: string) => {
                 if (!res.headersSent) {
                     res.status(status)
@@ -58,14 +58,14 @@ export class TypedRouter<O extends Record<string, never>> {
             }
 
             const typedReq = {
-                query: req.query as H['query'],
-                params: req.params as H['params'],
-                body: req.body as H['body'],
-                headers: req.headers as H['headers']
+                query: req.query as R['query'],
+                params: req.params as R['params'],
+                body: req.body as R['body'],
+                headers: req.headers as R['headers']
             }
 
             try {
-                const responseContent = await handler.handler(typedReq, error)
+                const responseContent = await route.handler(typedReq, error)
 
                 if (responseContent === undefined) {
                     res.status(500)
@@ -82,7 +82,7 @@ export class TypedRouter<O extends Record<string, never>> {
                     DELETE: 204
                 }
 
-                const status = statuses[handler.method]
+                const status = statuses[route.method]
 
                 if (status) {
                     res.status(status)
@@ -96,12 +96,12 @@ export class TypedRouter<O extends Record<string, never>> {
             }
         })
 
-        type Extended = O extends { [key in H['endpoint']]: unknown }
+        type Extended = O extends { [key in R['endpoint']]: unknown }
             ? O & {
-                  [key in H['endpoint']]: O[H['endpoint']] & { [method in H['method']]: ToAPI<H> }
+                  [key in R['endpoint']]: O[R['endpoint']] & { [method in R['method']]: ToAPI<R> }
               }
             : O & {
-                  [key in H['endpoint']]: { [method in H['method']]: ToAPI<H> }
+                  [key in R['endpoint']]: { [method in R['method']]: ToAPI<R> }
               }
 
         return new TypedRouter<Extended>(this.router)

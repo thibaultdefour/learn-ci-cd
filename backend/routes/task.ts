@@ -2,8 +2,6 @@ import { usePrisma } from '../orm/database.js'
 import type { ErrorFn, TypedRouteInterface, TypedReq } from './helpers/typed-router.js'
 import { TypedRouter } from './helpers/typed-router.js'
 
-type Business = { id: number; foo: string }
-
 const prisma = usePrisma()
 
 const typedRouter = new TypedRouter()
@@ -12,7 +10,7 @@ const typedRouter = new TypedRouter()
             method = 'GET' as const
             endpoint = '/api/tasks' as const
 
-            handler(req: TypedReq<GetTasksRoute>, error: ErrorFn) {
+            async handler(req: TypedReq<GetTasksRoute>, error: ErrorFn) {
                 return prisma.task.findMany({
                     include: {
                         collection: {
@@ -35,7 +33,7 @@ const typedRouter = new TypedRouter()
             declare body: { business: { name: string } }
             declare headers: { Authorization: 'Token ABC' }
 
-            handler(req: TypedReq<PutTasksRoute>, error: ErrorFn) {
+            async handler(req: TypedReq<PutTasksRoute>, error: ErrorFn) {
                 // return [] as Business[]
             }
         })()
