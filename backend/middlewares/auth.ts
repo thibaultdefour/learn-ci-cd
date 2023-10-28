@@ -1,10 +1,10 @@
 import type { RequestHandler, Request } from 'express'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../consts/secret.js'
-import type { UserInstance } from '../orm/models/user.js'
+import type User from '../orm/models/user.js'
 
 export interface AuthenticatedRequest extends Request {
-    user: UserInstance
+    user: User
 }
 const authMiddleware: RequestHandler = (req: AuthenticatedRequest, res, next) => {
     // Récupération du token d'authentification depuis le header Authorization
@@ -17,7 +17,7 @@ const authMiddleware: RequestHandler = (req: AuthenticatedRequest, res, next) =>
     }
 
     // Vérification et décryptage du token
-    jwt.verify(token, JWT_SECRET, (err, decodedToken: UserInstance) => {
+    jwt.verify(token, JWT_SECRET, (err, decodedToken: User) => {
         if (err) {
             return res.status(401).json({ error: 'Unauthorized', details: 'Invalid token' })
         }

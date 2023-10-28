@@ -1,9 +1,9 @@
-import type { TaskAPI } from '@api/task'
+import type { TaskAPI, TaskInstance } from '@api/task'
 import axios from 'restyped-axios'
 
 const client = axios.create<TaskAPI>({ baseURL: 'http://localhost:3000/' })
 
-export async function getTasks() {
+export async function getTasks(): Promise<TaskInstance[]> {
     return (
         await client.request({
             method: 'GET',

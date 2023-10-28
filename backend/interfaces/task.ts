@@ -1,18 +1,17 @@
-import type { TaskInstance } from '../orm/models/task'
+import type Task from '../orm/models/task.js'
 
-export type { TaskInstance }
-
+export type { Task }
 export interface TaskAPI {
     '/api/tasks': {
         GET: {
-            response: TaskInstance[]
+            response: Task[]
         }
         POST: {
             body: {
-                name: TaskInstance['name']
-                done: TaskInstance['done']
+                name: Task['name']
+                done: Task['done']
             }
-            response: TaskInstance
+            response: Task
         }
     }
 
@@ -25,7 +24,7 @@ export interface TaskAPI {
                 name?: string
                 done?: boolean
             }
-            response: TaskInstance
+            response: Task
         }
         DELETE: {
             query: {

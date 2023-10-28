@@ -1,14 +1,14 @@
 import type { TaskAPI } from '../interfaces/task'
-import { Task } from '../orm/models/task.js'
-import { typeRouter } from './helpers/router.js'
+import Collection from '../orm/models/collection.js'
+import Task from '../orm/models/task.js'
+import { useTypedRouter } from './helpers/router.js'
 
-const { router, typedRouter } = typeRouter<TaskAPI>()
+const { router, typedRouter } = useTypedRouter<TaskAPI>()
 
 typedRouter.get('/api/tasks', async (req, error) => {
-    const tasks = await Task.findAll()
+    const tasks = await Task.findAll({ include: [{ model: Collection, as: 'collection' }] })
+
     return tasks
-    return error(404, 'Not found')
-    // return success(tasks)
 })
 typedRouter.post('/api/tasks', async (req) => {
     const task = await Task.create({

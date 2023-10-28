@@ -1,53 +1,32 @@
 import {
-    type ForeignKey,
-    type CreationOptional,
-    DataTypes,
-    type InferAttributes,
-    type InferCreationAttributes,
-    type Attributes,
-    Model
-} from 'sequelize'
-import { sequelize } from '../database.js'
-import type { UserInstance } from './user.js'
+    BelongsTo,
+    Column,
+    DataType,
+    Default,
+    ForeignKey,
+    Model,
+    PrimaryKey,
+    Table
+} from 'sequelize-typescript'
+import Collection from './collection.js'
 
-export class TaskModel extends Model<
-    InferAttributes<TaskModel>,
-    InferCreationAttributes<TaskModel>
-> {
-    declare id: CreationOptional<string>
-    declare name: string
-    declare done: boolean
-    declare ownerId: ForeignKey<UserInstance['id']>
+@Table
+export default class Task extends Model {
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column(DataType.UUID)
+    id: string
+
+    @Column
+    name: string
+
+    @Column
+    done: boolean
+
+    @ForeignKey(() => Collection)
+    @Column(DataType.UUID)
+    collectionId: string
+
+    @BelongsTo(() => Collection)
+    collection: Awaited<Collection>
 }
-
-export type TaskInstance = Attributes<TaskModel>
-
-export const Task = TaskModel.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
-        done: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
-        ownerId: {
-            type: DataTypes.UUID,
-            allowNull: false
-        }
-    },
-    { sequelize, tableName: 'tasks' }
-)

@@ -1,68 +1,25 @@
-import {
-    DataTypes,
-    Model,
-    type NonAttribute,
-    type CreationOptional,
-    type InferAttributes,
-    type InferCreationAttributes
-} from 'sequelize'
-import { sequelize } from '../database.js'
-import type { TaskInstance } from './task.js'
+import { Column, DataType, Default, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript'
+import Collection from './collection.js'
 
-export class UserInstance extends Model<
-    InferAttributes<UserInstance>,
-    InferCreationAttributes<UserInstance>
-> {
-    declare id: CreationOptional<string>
-    declare username: string
-    declare email: string
-    declare password: string
-    declare admin: boolean
+@Table
+export default class User extends Model {
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column(DataType.UUID)
+    id: string
 
-    declare tasks?: NonAttribute<TaskInstance[]>
+    @Column
+    username: string
+
+    @Column
+    password: string
+
+    @Column
+    email: string
+
+    @Column
+    admin: boolean
+
+    @HasMany(() => Collection, { onDelete: 'CASCADE', foreignKey: 'ownerId' })
+    collections: Collection[]
 }
-
-export const User = UserInstance.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
-            primaryKey: true
-        },
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                notEmpty: true
-            }
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true
-            }
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
-        admin: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-            validate: {
-                isBoolean: true
-            }
-        }
-    },
-    {
-        sequelize,
-        tableName: 'users'
-    }
-)

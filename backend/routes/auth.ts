@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../consts/secret.js'
 import type { AuthAPI } from '../interfaces/auth.js'
-import { User } from '../orm/models/user.js'
-import { typeRouter } from './helpers/router.js'
+import User from '../orm/models/user.js'
+import { useTypedRouter } from './helpers/router.js'
 
-const { router, typedRouter } = typeRouter<AuthAPI>()
+const { router, typedRouter } = useTypedRouter<AuthAPI>()
 
 // Endpoint pour la création d'un nouvel utilisateur
 typedRouter.post('/api/auth/register', async (req) => {

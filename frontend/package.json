@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "restyped-axios": "^2.0.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.23"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",

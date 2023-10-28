@@ -1,24 +1,28 @@
-import { Task } from './models/task.js'
-import { User } from './models/user.js'
-
 export async function regenerateFixtures() {
-    await User.destroy({ where: {} })
-    await Task.destroy({ where: {} })
-
-    const userAlice = await User.create({
-        id: '1f2fadb1-0d7e-47a7-9d5b-ed031d665d3e',
-        username: 'alice',
-        email: 'alice@example.com',
-        password: 'azerty',
-        admin: false
-    })
-
-    await Task.create({
-        name: 'Lorem ipsum',
-        done: false,
-        ownerId: userAlice.id
-    })
+    // return
+    // await Task.destroy({ where: {} })
+    // await Collection.destroy({ where: {} })
+    // await User.destroy({ where: {} })
     //
+    // const userAlice = await User.create({
+    //     id: '1f2fadb1-0d7e-47a7-9d5b-ed031d665d3e',
+    //     username: 'alice',
+    //     email: 'alice@example.com',
+    //     password: 'azerty',
+    //     admin: false
+    // })
+    // //
+    // const collection = await Collection.create({
+    //     name: 'Lorem ipsum',
+    //     ownerId: userAlice.id
+    // })
+    //
+    // await Task.create({
+    //     name: 'Lorem ipsum',
+    //     done: false,
+    //     collectionId: collection.id
+    // })
+    // //
     //   const products = []
     //
     //   products.push(await Task.create({

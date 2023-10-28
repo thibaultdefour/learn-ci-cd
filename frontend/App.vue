@@ -3,7 +3,11 @@ import HelloWorld from '@/components/HelloWorld.vue'
 </script>
 
 <template>
-    <HelloWorld />
+    <VLayout>
+        <VMain class="d-flex align-center justify-center" style="min-height: 300px">
+            <HelloWorld />
+        </VMain>
+    </VLayout>
 </template>
 
 <style scoped>
