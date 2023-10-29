@@ -6,6 +6,8 @@ const { isAuthenticated } = useAuthStore()
 
 const tasks = ref<Task[]>([])
 
+const taskJustCreated = ref(false)
+
 watchEffect(() => {
     if (!isAuthenticated.value) {
         tasks.value = []
@@ -43,6 +45,7 @@ async function markTaskAsDone(taskId: string) {
 export function useTasksStore() {
     return {
         tasks,
+        taskJustCreated,
         error,
         loading,
         retrieveTasks,

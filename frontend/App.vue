@@ -4,8 +4,11 @@ import UserAuthentication from '@/components/AuthenticationForm.vue'
 import UserTasks from '@/components/TaskList.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import { useAuthStore } from '@/stores/auth.js'
+import { useTasksStore } from '@/stores/tasks.js'
 
 const { isAuthenticated } = useAuthStore()
+
+const { taskJustCreated } = useTasksStore()
 
 const taskModalOpen = ref(false)
 </script>
@@ -30,6 +33,7 @@ const taskModalOpen = ref(false)
             @click="taskModalOpen = true"
         />
     </VLayout>
+    <VSnackbar v-model="taskJustCreated"> Task created ! </VSnackbar>
 </template>
 
 <style scoped>
