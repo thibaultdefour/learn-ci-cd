@@ -59,6 +59,7 @@ export class TypedRouter<O extends Record<string, never>> {
             }
 
             const typedReq = {
+                ...req,
                 query: req.query as R['query'],
                 params: req.params as R['params'],
                 body: req.body as R['body'],
@@ -69,8 +70,7 @@ export class TypedRouter<O extends Record<string, never>> {
                 const responseContent = await route.handler(typedReq, error)
 
                 if (responseContent === undefined) {
-                    res.status(500)
-                    return res.send({ error: 'Internal server error' })
+                    return
                 }
 
                 const statuses: Record<Methods, number> = {

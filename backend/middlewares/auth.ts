@@ -24,6 +24,7 @@ const authMiddleware = ((req: Request & { user: AuthUser }, res: Response, next:
         if (decodedToken) {
             req.user = decodedToken as AuthUser
         }
+
         next()
     })
 }) as RequestHandler

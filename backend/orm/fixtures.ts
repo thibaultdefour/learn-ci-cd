@@ -3,9 +3,9 @@ import { usePrisma } from './database.js'
 const prisma = usePrisma()
 
 export async function regenerateFixtures() {
-    // await prisma.collection.deleteMany({ where: {} })
-    // await prisma.task.deleteMany({ where: {} })
-    // await prisma.user.deleteMany({ where: {} })
+    await prisma.collection.deleteMany({ where: {} })
+    await prisma.task.deleteMany({ where: {} })
+    await prisma.user.deleteMany({ where: {} })
 
     const userAlice = await prisma.user.create({
         data: {

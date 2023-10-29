@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { signIn, signUp } from '@/stores/auth.js'
+import { useAuthStore } from '@/stores/auth.js'
+
+const { signIn, signUp } = useAuthStore()
 
 const mode = ref<'Sign-in' | 'Sign-up'>('Sign-up')
 
@@ -22,8 +24,10 @@ const isSubmittable = computed(() => {
     return true
 })
 async function submit() {
-    loading.value = true
+    if (!isSubmittable.value) return
 
+    loading.value = true
+    error.value = null
     try {
         if (mode.value === 'Sign-up') {
             await signUp(email.value, username.value, password.value)
@@ -45,14 +49,27 @@ async function submit() {
                 {{ error }}
             </VAlert>
 
-            <VTextField v-model="email" label="E-Mail" variant="outlined" />
+            <VTextField
+                v-model="email"
+                label="E-Mail"
+                variant="outlined"
+                autofocus
+                @keyup.enter="submit"
+            />
             <VTextField
                 v-if="mode === 'Sign-up'"
                 v-model="username"
                 label="Username"
                 variant="outlined"
+                @keyup.enter="submit"
             />
-            <VTextField v-model="password" label="Password" type="password" variant="outlined" />
+            <VTextField
+                v-model="password"
+                label="Password"
+                type="password"
+                variant="outlined"
+                @keyup.enter="submit"
+            />
             <VBtn
                 :disabled="!isSubmittable"
                 color="primary"

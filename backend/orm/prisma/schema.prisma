@@ -23,7 +23,7 @@ model Task {
   id           String     @id @default(uuid())
   name         String
   done         Boolean    @default(false)
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   collectionId String
 }
 
@@ -31,6 +31,6 @@ model Collection {
   id      String  @id @default(uuid())
   name    String
   tasks   Task[]
-  owner   User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String
 }

@@ -12,6 +12,7 @@
     "format": "prettier --write ./"
   },
   "dependencies": {
+    "@mdi/font": "^7.3.67",
     "jwt-decode": "^4.0.0",
     "restyped-axios": "^2.0.0",
     "vue": "^3.3.4",

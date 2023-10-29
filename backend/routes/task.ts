@@ -14,8 +14,13 @@ const typedRouter = new TypedRouter()
 
             middlewares = [authMiddleware]
 
-            async handler() {
+            async handler(req: AuthReq<TypedReq<GetTasksRoute>>) {
                 return prisma.task.findMany({
+                    where: {
+                        collection: {
+                            ownerId: req.user.id
+                        }
+                    },
                     include: {
                         collection: {
                             include: {
@@ -32,18 +37,18 @@ const typedRouter = new TypedRouter()
             method = 'PATCH' as const
             endpoint = '/api/tasks/:taskId' as const
 
-            declare query: { tasksId: string }
-            declare body: { name: string; done: boolean }
+            declare params: { taskId: string }
+            declare body: { name?: string; done?: boolean }
 
             middlewares = [authMiddleware]
 
             async handler(req: AuthReq<TypedReq<PutTasksRoute>>, error: ErrorFn) {
-                if (!req.query.tasksId) {
+                if (!req.params.taskId) {
                     return error(400, 'Bad request')
                 }
 
                 const task = await prisma.task.findFirst({
-                    where: { id: req.query.tasksId }
+                    where: { id: req.params.taskId }
                 })
 
                 if (!task) {
@@ -75,6 +80,8 @@ const typedRouter = new TypedRouter()
                     },
                     data: task
                 })
+
+                return task
             }
         })()
     )
