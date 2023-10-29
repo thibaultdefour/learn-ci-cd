@@ -1,5 +1,6 @@
 import type { TaskAPI } from '@api/task'
 import axios from 'restyped-axios'
+import { getAuthHeader } from '@/services/helper/authorization.js'
 
 const client = axios.create<TaskAPI>({ baseURL: 'http://localhost:3000/' })
 
@@ -7,7 +8,8 @@ export async function getTasks() {
     return (
         await client.request({
             method: 'GET',
-            url: '/api/tasks'
+            url: '/api/tasks',
+            headers: getAuthHeader()
         })
     ).data
 }
@@ -20,7 +22,8 @@ export async function postTask(name: string, done: boolean) {
             data: {
                 name,
                 done
-            }
+            },
+            headers: getAuthHeader()
         })
     ).data
 }
