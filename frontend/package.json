@@ -5,10 +5,11 @@
     "dev": "vite --host",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
-    "test:unit": "vitest",
+    "unit-tests": "vitest --passWithNoTests",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lint-check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "lint-fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "format": "prettier --write ./"
   },
   "dependencies": {

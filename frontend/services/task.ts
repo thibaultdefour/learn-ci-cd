@@ -2,8 +2,9 @@ import type { TaskAPI } from '@api/task'
 import axios from 'restyped-axios'
 import { getAuthHeader } from '@/services/helper/authorization.js'
 import type { ServiceReturn } from '@/services/helper/typing'
+import { baseURL } from './helper/base'
 
-const client = axios.create<TaskAPI>({ baseURL: 'http://localhost:3000/' })
+const client = axios.create<TaskAPI>({ baseURL })
 
 export async function getTasks() {
     return (

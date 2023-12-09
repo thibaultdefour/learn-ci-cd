@@ -23,7 +23,7 @@ export async function regenerateFixtures() {
         }
     })
 
-    const aliceTask = await prisma.task.create({
+    const _aliceTask = await prisma.task.create({
         data: {
             name: 'dfsdf',
             done: false,
@@ -31,7 +31,7 @@ export async function regenerateFixtures() {
         }
     })
 
-    const tasks = await prisma.user.findMany({
+    const _tasks = await prisma.user.findMany({
         include: {
             collections: {
                 include: {

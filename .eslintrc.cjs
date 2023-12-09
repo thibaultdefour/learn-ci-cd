@@ -16,6 +16,8 @@ module.exports = {
     ],
     plugins: ['import', 'unused-imports'],
     rules: {
+        'quotes': ["error", "single", { "allowTemplateLiterals": true }],
+
         // Disable some opinionated rules from @vue/prettier/@typescript-eslint ruleset
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
@@ -44,8 +46,6 @@ module.exports = {
                 ],
             },
         ],
-        "import/extensions": ["error", "always"],
-
 
         // unused-imports plugin config:
         // https://www.npmjs.com/package/eslint-plugin-unused-imports

@@ -1,7 +1,8 @@
 import type { AuthAPI } from '@api/auth.js'
 import axios from 'restyped-axios'
+import { baseURL } from './helper/base'
 
-const client = axios.create<AuthAPI>({ baseURL: 'http://localhost:3000/' })
+const client = axios.create<AuthAPI>({ baseURL })
 export async function login(email: string, password: string) {
     return (
         await client.request({

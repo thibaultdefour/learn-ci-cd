@@ -8,15 +8,14 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ES2021",
-    "verbatimModuleSyntax": true,
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
     "strictNullChecks": true,
-    "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noEmit": true
   },
 }

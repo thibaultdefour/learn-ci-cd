@@ -13,6 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
+.ssh
 
 /cypress/videos/
 /cypress/screenshots/
@@ -26,3 +27,5 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+backend/tsconfig.tsbuildinfo
+backend/release/*

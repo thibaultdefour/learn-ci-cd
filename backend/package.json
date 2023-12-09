@@ -6,13 +6,17 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon index.ts",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix"
+    "build": "rollup -c && cp -r orm/prisma release",
+    "lint-check": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lint-fix": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "db-install": "prisma generate && prisma migrate dev",
+    "type-check": "tsc",
+    "unit-tests": "jest --passWithNoTests"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.1.13",
     "restyped": "^1.1.0",
@@ -21,6 +25,9 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/cors": "^2.8.15",
     "@types/express": "^4.17.20",
     "@types/jsonwebtoken": "^9.0.4",
@@ -28,7 +35,11 @@
     "@types/validator": "^13.11.5",
     "nodemon": "^3.0.1",
     "prisma": "^5.5.2",
-    "ts-node": "^10.9.1"
+    "rollup": "^4.7.0",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.6.2"
   },
   "prisma": {
     "schema": "orm/prisma/schema.prisma"

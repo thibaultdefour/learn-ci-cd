@@ -18,6 +18,8 @@ async function main() {
     app.use(taskRoutes)
     app.use(userRoutes)
 
+    app.get('/', (req, res) => res.end(`Rock'n'roll !`))
+
     app.listen(process.env.PORT || 3000, () => {
         console.info('Server started on port 3000')
     })
