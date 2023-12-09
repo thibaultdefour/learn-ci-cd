@@ -19,9 +19,12 @@ const taskModalOpen = ref(false)
     </VDialog>
 
     <VLayout class="vh100">
-        <VMain class="d-flex flex-column align-center justify-center">
-            <UserAuthentication v-if="!isAuthenticated" />
-            <UserTasks v-else />
+        <VMain class="d-flex flex-column align-center">
+            <h1>The Sherlock and Watson App</h1>
+            <div class="flex-1-1 d-flex flex-column align-center justify-center">
+                <UserAuthentication v-if="!isAuthenticated" />
+                <UserTasks v-else />
+            </div>
         </VMain>
     </VLayout>
     <VLayout v-if="isAuthenticated" class="footer">
@@ -43,6 +46,10 @@ body,
 .vh100 {
     min-height: 100vh;
     padding: 40px;
+}
+
+h1 {
+    margin-bottom: 40px;
 }
 
 .footer {
