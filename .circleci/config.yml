@@ -15,9 +15,11 @@ jobs:
     steps:
       - checkout
 
-      - run: |
-          pwd
-          ls
+      - run: 
+          -working_directory: ./backend
+          - command:  | 
+              pwd
+              ls
 
       - run: 
           npm install
