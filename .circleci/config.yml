@@ -100,10 +100,6 @@ workflows:
       - backend-unit-tests
 
   cd-workflow:
-    filters:
-      branches:
-        only:
-          - main
     jobs:
       - backend-lint
       - backend-type-check
@@ -114,6 +110,10 @@ workflows:
             - backend-lint
             - backend-type-check
             - backend-unit-tests
+    filters:
+      branches:
+        only:
+          - main
 
 
       
