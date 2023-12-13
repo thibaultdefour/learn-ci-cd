@@ -71,7 +71,7 @@ jobs:
           command: npm run semantic-release
 
   build_and_deploy:
-     docker:
+    docker:
       - image: node:lts
     steps:
       - checkout
