@@ -85,10 +85,10 @@ workflows:
   cd-workflow:
     jobs:
       - release:
-        requires:
-          - backend-lint
-          - backend-type-check
-          - backend-unit-tests
+          requires:
+            - backend-lint
+            - backend-type-check
+            - backend-unit-tests
 
 
       
