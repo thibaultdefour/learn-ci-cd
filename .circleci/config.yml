@@ -69,11 +69,7 @@ workflows:
   backend-ci-workflow:
     jobs:
       - backend-lint
-  backend-ci-workflow:
-    jobs:
       - backend-type-check
-  backend-ci-workflow:
-    jobs:
       - backend-unit-tests
 
 
