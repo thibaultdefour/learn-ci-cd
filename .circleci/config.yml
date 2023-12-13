@@ -16,7 +16,7 @@ jobs:
       - checkout
 
       - run: 
-          -working_directory: ./backend
+          - working_directory: ./backend
           - command:  | 
               pwd
               ls
