@@ -69,6 +69,22 @@ jobs:
       - run:
           name: "Semantic Release"
           command: npm run semantic-release
+
+  build_and_deploy:
+     docker:
+      - image: node:lts
+    steps:
+      - checkout
+      - run: 
+          command: npm install
+      - run:
+          name: "Build Backend"
+          command: npm run build
+          working_directory: backend
+      - run:
+          name: "Build Frontend"
+          command: npm run build
+          working_directory: frontend
       
 
 
@@ -82,12 +98,17 @@ workflows:
       - backend-lint
       - backend-type-check
       - backend-unit-tests
-      
+
   cd-workflow:
+    filters:
+      branches:
+        only:
+          - main
     jobs:
       - backend-lint
       - backend-type-check
       - backend-unit-tests
+      - build_and_deploy
       - release:
           requires:
             - backend-lint
