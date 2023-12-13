@@ -16,10 +16,10 @@ jobs:
     steps:
       - checkout
       - run: 
-        command: "npm install"
+        command: npm install
       - run:
           name: "Backend lint"
-          command: "npm run lint-check"
+          command: npm run lint-check
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
