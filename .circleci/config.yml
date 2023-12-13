@@ -64,6 +64,8 @@ jobs:
       - image: node:lts
     steps:
       - checkout
+      - run: 
+          command: npm install
       - run:
           name: "Semantic Release"
           command: npm run semantic-release
