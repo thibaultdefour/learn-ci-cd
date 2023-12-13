@@ -16,11 +16,12 @@ jobs:
     steps:
       - checkout
 
-      - run: 
-         pwd
+      - run: |
+          pwd
+          ls
 
       - run: 
-         npm install
+          npm install
 
       - run:
           name: "Backend lint"
