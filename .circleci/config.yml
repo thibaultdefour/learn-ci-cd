@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - run: 
-        command: npm install
+         npm install
       - run:
           name: "Backend lint"
           command: npm run lint-check
