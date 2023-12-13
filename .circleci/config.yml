@@ -79,16 +79,18 @@ jobs:
 workflows:
   backend-ci-workflow:
     jobs:
-      - release
-      - backend-lint:
-          requires:
-            - release
-      - backend-type-check:
-          requires:
-            - release
-      - backend-unit-tests:
-          requires:
-            - release
+      - backend-lint
+      - backend-type-check
+      - backend-unit-tests
+  cd-workflow:
+    jobs:
+      - release:
+        requires:
+          - backend-lint
+          - backend-type-check
+          - backend-unit-tests
+
+
       
 
 
