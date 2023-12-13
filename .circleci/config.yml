@@ -19,6 +19,8 @@ jobs:
           command: | 
             pwd
             ls
+            echo "Contents of /home/circleci/backend:"
+            ls /home/circleci/backend
 
       - run: 
           npm install
