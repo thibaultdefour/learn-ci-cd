@@ -16,12 +16,6 @@ jobs:
       - checkout
 
       - run: 
-          command: | 
-            pwd
-            ls
-          working_directory: backend
-
-      - run: 
           command: npm install
 
       - run:
