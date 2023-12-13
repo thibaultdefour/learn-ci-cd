@@ -40,6 +40,24 @@ jobs:
       - run: 
           command: npm run type-check
           working_directory: backend
+
+  backend-unit-tests:
+    docker:
+      - image: node:lts
+    
+    steps:
+      - checkout
+
+      - run: 
+          command: npm install
+
+      - run: 
+          command: npm run db-install
+          working_directory: backend
+      
+      - run: 
+          command: npm run unit-tests
+          working_directory: backend
       
 
 
@@ -51,6 +69,7 @@ workflows:
   backend-ci-workflow:
     jobs:
       - backend-lint
-  backend-ci-workflow.jobs:
-    jobs:
       - backend-type-check
+      - backend-unit-tests
+
+
