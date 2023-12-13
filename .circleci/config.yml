@@ -10,17 +10,14 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
       - image: node:lts
-    working_directory: ~/backend
+    working_directory: backend
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
 
       - run: 
-         cd backend/
-
-      - run: 
-         ls
+         pwd
 
       - run: 
          npm install
