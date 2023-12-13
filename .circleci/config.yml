@@ -16,10 +16,10 @@ jobs:
       - checkout
 
       - run: 
-          - working_directory: ./backend
           - command:  | 
               pwd
               ls
+          - working_directory: ./backend
 
       - run: 
           npm install
