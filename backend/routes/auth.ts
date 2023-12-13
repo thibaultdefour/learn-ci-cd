@@ -5,7 +5,7 @@ import type { ErrorFn, TypedReq, TypedRouteInterface } from './helpers/typed-rou
 import { TypedRouter } from './helpers/typed-router'
 
 export function isValidPassword(password: string) {
-    // Contains at least 8 characters and a number
+    console.log(password.length >= 8)
     return password.length >= 8 && password.match(/[0-9]/) !== null
 }
 
