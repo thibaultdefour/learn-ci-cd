@@ -19,15 +19,16 @@ jobs:
           command: | 
             pwd
             ls
-            echo "Contents of /home/circleci/backend:"
-            ls /home/circleci/backend
+          working_directory: ~/backend
 
       - run: 
-          npm install
+          command: npm install
+          working_directory: ~/backend
 
       - run:
           name: "Backend lint"
           command: npm run lint-check
+          working_directory: ~/backend
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
