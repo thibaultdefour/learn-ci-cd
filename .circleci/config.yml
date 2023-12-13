@@ -51,6 +51,6 @@ workflows:
   backend-ci-workflow:
     jobs:
       - backend-lint
-  workflows.backend-ci-workflow.jobs:
+  backend-ci-workflow.jobs:
     jobs:
       - backend-type-check
