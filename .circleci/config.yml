@@ -78,9 +78,12 @@ jobs:
       - run: 
           command: npm install
       - run:
-          name: "Build Backend"
-          command: npm run build
           working_directory: backend
+          name: "Build Backend"
+          command: |
+          npm run build
+          npm run db-install
+        
       - run:
           name: "Build Frontend"
           command: npm run build
