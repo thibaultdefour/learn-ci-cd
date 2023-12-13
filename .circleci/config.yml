@@ -17,9 +17,9 @@ jobs:
       - checkout
 
       - run: 
-          - command:  | 
-              pwd
-              ls
+        - command:  | 
+            pwd
+            ls
 
       - run: 
           npm install
