@@ -80,8 +80,8 @@ jobs:
       - run:
           name: "Build Backend"
           command: |
-              npm run build
               npm run db-install
+              npm run build
           working_directory: backend
         
       - run:
