@@ -101,19 +101,31 @@ workflows:
 
   cd-workflow:
     jobs:
-      - backend-lint
-      - backend-type-check
-      - backend-unit-tests
-      - build_and_deploy
+      - backend-lint:
+          filters:
+            branches:
+              only:
+                - main
+      - backend-type-check:
+          filters:
+            branches:
+              only:
+                - main
+      - backend-unit-tests:
+          filters:
+            branches:
+              only:
+                - main
+      - build_and_deploy:
+          filters:
+            branches:
+              only:
+                - main
       - release:
-          requires:
-            - backend-lint
-            - backend-type-check
-            - backend-unit-tests
-    filters:
-      branches:
-        only:
-          - main
+          filters:
+            branches:
+              only:
+                - main
 
 
       
