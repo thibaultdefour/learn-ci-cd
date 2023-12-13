@@ -58,6 +58,15 @@ jobs:
       - run: 
           command: npm run unit-tests
           working_directory: backend
+
+  release:
+    docker:
+      - image: node:lts
+    steps:
+      - checkout
+      - run:
+          name: "Semantic Release"
+          command: npm run semantic-release
       
 
 
@@ -68,8 +77,16 @@ jobs:
 workflows:
   backend-ci-workflow:
     jobs:
-      - backend-lint
-      - backend-type-check
-      - backend-unit-tests
+      - release
+      - backend-lint:
+          requires:
+            - release
+      - backend-type-check:
+          requires:
+            - release
+      - backend-unit-tests:
+          requires:
+            - release
+      
 
 
